@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StokEkstresi.UI", "StokEkst
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StokEkstresi.Business", "StokEkstresi.Business\StokEkstresi.Business.csproj", "{3FCE6DA3-B034-42E9-AF28-05D9C940098C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Common\Utils\Utils.csproj", "{087A4FC2-585D-415D-9278-404F45C3F36E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,12 +37,17 @@ Global
 		{3FCE6DA3-B034-42E9-AF28-05D9C940098C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FCE6DA3-B034-42E9-AF28-05D9C940098C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FCE6DA3-B034-42E9-AF28-05D9C940098C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{087A4FC2-585D-415D-9278-404F45C3F36E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{087A4FC2-585D-415D-9278-404F45C3F36E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{087A4FC2-585D-415D-9278-404F45C3F36E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{087A4FC2-585D-415D-9278-404F45C3F36E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DAEEA674-FC67-43D3-A1C8-196D76DE1845} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{087A4FC2-585D-415D-9278-404F45C3F36E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D7F19C0-5653-49A2-A907-EE36FCBFCA03}

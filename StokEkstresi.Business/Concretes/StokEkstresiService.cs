@@ -1,5 +1,6 @@
 ﻿using StokEkstresi.Business.Abstacts;
 using StokEkstresi.DataAccess.Abstracts;
+using Utils.Helpers.Conversion;
 
 namespace StokEkstresi.Business.Concretes
 {
@@ -12,10 +13,24 @@ namespace StokEkstresi.Business.Concretes
             _sTIRepository = sTIRepository;
         }
 
+        public async Task GetStiWithDate(DateTime? startDate, DateTime? finishDate)
+        {
+            int startDateInt = 0;
+            int finishDateInt = 0;
 
+            if (startDate.HasValue)
+                startDateInt = DateTimeConversionHelper.ConvertToIntFromDateTime(startDate.Value);
+
+            if (finishDate.HasValue)
+                finishDateInt = DateTimeConversionHelper.ConvertToIntFromDateTime(finishDate.Value);
+
+          
+
+
+        }
         public async Task xx()
         {
-          var result = await _sTIRepository.GetAllSTIS();
+            var result = await _sTIRepository.GetAllSTIS();
         }
     }
 }

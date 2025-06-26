@@ -6,41 +6,51 @@ namespace StokEkstresi.UI.Helper
     {
         /// <summary>
         /// İki tarih string'ini (gg.AA.yyyy) formatında kontrol eder.
-        /// Eğer her ikisi de boşsa geçerlidir.
-        /// Format geçersizse veya bitiş tarihi başlangıçtan küçükse hata mesajı döner.
+        /// - Her iki tarih boşsa geçerli kabul edilir.
+        /// - Format hatası varsa veya bitiş < başlangıç ise false döner.
+        /// - Geçerli tarihleri out parametre olarak verir.
         /// </summary>
-        public static bool DateValidate(string startDate, string finishDate, out string invalidMessage)
+        public static bool DateValidator(string startDate, string finishDate, out string invalidMessage, out DateTime? parsedStartDate, out DateTime? parsedFinishDate)
         {
             invalidMessage = string.Empty;
-            DateTime parsedStart = DateTime.MinValue;
-            DateTime parsedFinish = DateTime.MinValue;
+            parsedStartDate = null;
+            parsedFinishDate = null;
 
-            bool startEmpty = string.IsNullOrWhiteSpace(startDate);
-            bool finishEmpty = string.IsNullOrWhiteSpace(finishDate);
+            bool isStartEmpty = string.IsNullOrWhiteSpace(startDate);
+            bool isFinishEmpty = string.IsNullOrWhiteSpace(finishDate);
 
-            string[] formats = { "d.M.yyyy", "dd.MM.yyyy", "d.MM.yyyy", "dd.M.yyyy" };
-            var culture = CultureInfo.InvariantCulture;
-
-            // Her iki tarih de girilmemişse → Geçerli kabul et
-            if (startEmpty && finishEmpty)
+            // Her iki tarih boşsa → geçerli kabul edilir
+            if (isStartEmpty && isFinishEmpty)
                 return true;
 
-            // Başlangıç tarihi doluysa, format kontrolü
-            if (!startEmpty && !DateTime.TryParseExact(startDate, formats, culture, DateTimeStyles.None, out parsedStart))
+            var formats = new[] { "d.M.yyyy", "dd.MM.yyyy", "d.MM.yyyy", "dd.M.yyyy" };
+            var culture = CultureInfo.InvariantCulture;
+          
+            if (!isStartEmpty)
             {
-                invalidMessage = "Başlangıç tarihi geçerli bir formatta değil (gg.AA.yyyy)";
-                return false;
+                if (!DateTime.TryParseExact(startDate, formats, culture, DateTimeStyles.None, out DateTime start))
+                {
+                    invalidMessage = "Başlangıç tarihi geçerli bir formatta değil (gg.AA.yyyy)";
+                    return false;
+                }
+
+                parsedStartDate = start;
             }
 
-            // Bitiş tarihi doluysa, format kontrolü
-            if (!finishEmpty && !DateTime.TryParseExact(finishDate, formats, culture, DateTimeStyles.None, out parsedFinish))
+            if (!isFinishEmpty)
             {
-                invalidMessage = "Bitiş tarihi geçerli bir formatta değil (gg.AA.yyyy)";
-                return false;
+                if (!DateTime.TryParseExact(finishDate, formats, culture, DateTimeStyles.None, out DateTime finish))
+                {
+                    invalidMessage = "Bitiş tarihi geçerli bir formatta değil (gg.AA.yyyy)";
+                    return false;
+                }
+
+                parsedFinishDate = finish;
             }
 
-            // İkisi de varsa ve sıralama yanlışsa
-            if (!startEmpty && !finishEmpty && parsedFinish < parsedStart)
+            // Eğer her ikisi de varsa, sıralamayı kontrol et
+            if (parsedStartDate.HasValue && parsedFinishDate.HasValue &&
+                parsedFinishDate.Value < parsedStartDate.Value)
             {
                 invalidMessage = "Bitiş tarihi, başlangıç tarihinden önce olamaz.";
                 return false;

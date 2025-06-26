@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Common\Utils\Utils.csproj" />
     <ProjectReference Include="..\StokEkstresi.DataAccess\StokEkstresi.DataAccess.csproj" />
   </ItemGroup>
 

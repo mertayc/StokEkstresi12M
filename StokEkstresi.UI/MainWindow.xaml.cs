@@ -19,7 +19,7 @@ namespace StokEkstresi.UI
 
         private async void Listele_Click(object sender, RoutedEventArgs e)
         {
-            if (!Validators.DateValidate(dpStart.Text, dpFinish.Text, out string invalidMessage))
+            if (!Validators.DateValidator(dpStart.Text, dpFinish.Text, out string invalidMessage,out DateTime? startDate,out DateTime? finishDate))
             {
                 MessageBox.Show(invalidMessage, "Tarih Hatası", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
