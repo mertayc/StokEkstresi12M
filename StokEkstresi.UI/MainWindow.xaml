@@ -1,0 +1,20 @@
+﻿<Window x:Class="StokEkstresi.UI.MainWindow"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        Title="Stok Ekstresi" Height="400" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+            <TextBox x:Name="txtMalKodu" Text="MalKodu" GotFocus="txtMalKodu_GotFocus" LostFocus="txtMalKodu_LostFocus" />
+            <DatePicker x:Name="dpBaslangic" Width="130" Margin="0 0 10 0"/>
+            <DatePicker x:Name="dpBitis" Width="130" Margin="0 0 10 0"/>
+            <Button Content="Listele" Click="Listele_Click" Width="100"/>
+        </StackPanel>
+
+        <DataGrid Grid.Row="1" x:Name="dataGrid" AutoGenerateColumns="True"/>
+    </Grid>
+</Window>
