@@ -17,6 +17,6 @@ namespace StokEkstresi.DataAccess.Concretes.Contexts
         }
 
         public IDbConnection CreateConnection() => new SqlConnection(_connectionString);
-
+      
     }
 }

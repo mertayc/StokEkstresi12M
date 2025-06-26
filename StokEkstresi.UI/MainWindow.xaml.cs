@@ -1,6 +1,6 @@
 ﻿using StokEkstresi.Business.Abstacts;
+using StokEkstresi.UI.Helper;
 using System.Windows;
-using System.Windows.Media;
 
 namespace StokEkstresi.UI
 {
@@ -19,25 +19,15 @@ namespace StokEkstresi.UI
 
         private async void Listele_Click(object sender, RoutedEventArgs e)
         {
-            await _stokService.xx();
+            if (!Validators.DateValidate(dpStart.Text, dpFinish.Text, out string invalidMessage))
+            {
+                MessageBox.Show(invalidMessage, "Tarih Hatası", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            //await _stokService.xx();
         }
 
-        private void txtMalKodu_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (txtMalKodu.Text == "MalKodu")
-            {
-                txtMalKodu.Text = "";
-                txtMalKodu.Foreground = Brushes.Black;
-            }
-        }
-
-        private void txtMalKodu_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txtMalKodu.Text))
-            {
-                txtMalKodu.Text = "MalKodu";
-                txtMalKodu.Foreground = Brushes.Gray;
-            }
-        }
+   
     }
 }

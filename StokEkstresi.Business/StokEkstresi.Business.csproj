@@ -14,4 +14,8 @@
     <ProjectReference Include="..\StokEkstresi.DataAccess\StokEkstresi.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="BusinessRules\" />
+  </ItemGroup>
+
 </Project>

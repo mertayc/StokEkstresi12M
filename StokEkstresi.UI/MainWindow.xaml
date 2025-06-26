@@ -1,6 +1,6 @@
 ﻿<Window x:Class="StokEkstresi.UI.MainWindow"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Stok Ekstresi" Height="400" Width="800">
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -8,12 +8,22 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
-            <TextBox x:Name="txtMalKodu" Text="MalKodu" GotFocus="txtMalKodu_GotFocus" LostFocus="txtMalKodu_LostFocus" />
-            <DatePicker x:Name="dpBaslangic" Width="130" Margin="0 0 10 0"/>
-            <DatePicker x:Name="dpBitis" Width="130" Margin="0 0 10 0"/>
-            <Button Content="Listele" Click="Listele_Click" Width="100"/>
+        <StackPanel Orientation="Horizontal" Margin="0 0 0 10" VerticalAlignment="Top">
+            <StackPanel Margin="0 0 10 0">
+                <TextBlock Text="Başlangıç Tarihi" FontWeight="Bold" />
+                <DatePicker x:Name="dpStart" Width="130" SelectedDateFormat="Short" />
+            </StackPanel>
+
+            <StackPanel Margin="0 0 10 0">
+                <TextBlock Text="Bitiş Tarihi" FontWeight="Bold" />
+                <DatePicker x:Name="dpFinish" Width="130" SelectedDateFormat="Short" />
+            </StackPanel>
+
+            <StackPanel VerticalAlignment="Bottom">
+                <Button Content="Listele" Width="100" Click="Listele_Click"/>
+            </StackPanel>
         </StackPanel>
+
 
         <DataGrid Grid.Row="1" x:Name="dataGrid" AutoGenerateColumns="True"/>
     </Grid>
