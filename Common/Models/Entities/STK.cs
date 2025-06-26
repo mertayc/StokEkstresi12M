@@ -1,6 +1,6 @@
 ﻿namespace Models.Entities
 {
-    public class STK
+    public class Stk
     {
         public int Id { get; set; }
         public string MalKodu { get; set; }

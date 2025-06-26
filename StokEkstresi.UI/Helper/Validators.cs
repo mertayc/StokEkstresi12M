@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using Models.Entities;
+using System.Globalization;
+using System.Windows;
 
 namespace StokEkstresi.UI.Helper
 {
@@ -56,6 +58,30 @@ namespace StokEkstresi.UI.Helper
                 return false;
             }
 
+            return true;
+        }
+
+        public static bool MalKoduValidator(string? girilenMalKodu, List<Stk>? allStks,out string invalidMessage,out string selectedMalKodu)
+        {
+            invalidMessage = string.Empty;
+            selectedMalKodu = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(girilenMalKodu))
+            {
+                invalidMessage = "Lütfen bir Mal Kodu girin veya seçin.";
+                return false;
+            }
+
+            // Liste dışı kontrolü
+            var selected = allStks?.FirstOrDefault(x => string.Equals(x.MalKodu, girilenMalKodu, StringComparison.OrdinalIgnoreCase));
+
+            if (selected is null)
+            {
+                invalidMessage = "Girilen Mal Kodu listede bulunamadı. Lütfen geçerli bir Mal Kodu seçin.";
+                return false;
+            }
+
+            selectedMalKodu = selected.MalKodu;
             return true;
         }
     }

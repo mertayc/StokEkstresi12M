@@ -1,14 +1,12 @@
-﻿using Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Models.Dtos;
+using Models.Entities;
 
 namespace StokEkstresi.DataAccess.Abstracts
 {
-    public interface ISTIRepository
+    public interface IStiRepository
     {
-        Task<IEnumerable<STI?>> GetAllSTIS();
+        Task<IEnumerable<Sti?>> GetAllSTIS();
+        Task<List<Sti>?> GetStisByDateRangeAsync(int? startDate, int? finishDate);
+        Task<List<StokEkstresiDto>?> GetStockReportAsync(int? startDate, int? finishDate, string malKodu);
     }
 }

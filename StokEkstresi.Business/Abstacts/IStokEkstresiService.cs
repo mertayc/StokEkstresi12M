@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Models.Dtos;
+using Models.Entities;
 
 namespace StokEkstresi.Business.Abstacts
 {
     public interface IStokEkstresiService
     {
-
-        Task xx();
+        Task<List<StokEkstresiDto>?> GetStokEkstresiAsync(DateTime? startDate, DateTime? finishDate, string malKodu);
+        Task<List<Stk>?> GetStksAsync();
     }
 }

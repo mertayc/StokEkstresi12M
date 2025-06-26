@@ -1,0 +1,95 @@
+-- Stok hareketlerini, tarih aralığı ve mal koduna göre filtreleyen ve 
+-- stok miktarını işlemlere göre hesaplayarak listeleyen stored procedure.
+
+CREATE PROCEDURE sp_GetStiWithCalculatedStock
+    @StartDate INT = NULL,         -- Tarih filtrelemesi için başlangıç tarihi (nullable)
+    @FinishDate INT = NULL,        -- Tarih filtrelemesi için bitiş tarihi (nullable)
+    @MalKodu NVARCHAR(50)          -- Aranacak MalKodu (zorunlu)
+AS
+BEGIN
+    SET NOCOUNT ON;  -- Prosedür çalışırken etkilenen satır sayısı mesajlarını bastırır.
+
+   
+    -- Geçici tablo tanımı
+    CREATE TABLE #TempResult
+    (
+        SiraNo INT IDENTITY(1,1),         
+        IslemTur NVARCHAR(10),            
+        EvrakNo NVARCHAR(50),             
+        Tarih NVARCHAR(15),              
+        GirisMiktar DECIMAL(18,2),       
+        CikisMiktar DECIMAL(18,2),       
+        Stok DECIMAL(18,2)            
+    );
+
+    -- Stok başlangıç değeri
+    DECLARE @stok DECIMAL(18,2) = 0;
+
+    -- Cursor ile gezilecek verilerin tutulacağı değişkenler
+    DECLARE @islemTur INT,
+            @evrakNo NVARCHAR(50),
+            @tarih INT,
+            @miktar DECIMAL(18,2),
+            @formattedTarih NVARCHAR(15),
+            @girisMiktar DECIMAL(18,2),
+            @cikisMiktar DECIMAL(18,2),
+            @islemTurText NVARCHAR(10);
+
+    ----------------------------------------------------------------------
+    -- Cursor tanımı: STI tablosundan ilgili kayıtlar alınır.
+    -- MalKodu eşleşmeli, tarih varsa aralığına göre filtrelenir.
+    ----------------------------------------------------------------------
+    DECLARE cur CURSOR FOR
+        SELECT IslemTur, EvrakNo, Tarih, Miktar
+        FROM STI
+        WHERE MalKodu = @MalKodu
+          AND (@StartDate IS NULL OR Tarih >= @StartDate)
+          AND (@FinishDate IS NULL OR Tarih <= @FinishDate)
+        ORDER BY Tarih;
+
+    -- Cursor başlatılır ve ilk kayıt alınır
+    OPEN cur;
+    FETCH NEXT FROM cur INTO @islemTur, @evrakNo, @tarih, @miktar;
+
+    ----------------------------------------------------------------------
+    -- Cursor ile kayıtlar tek tek gezilir
+    ----------------------------------------------------------------------
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        -- INT olarak tutulan tarih değeri → datetime’a çevrilip string yapılır
+        SET @formattedTarih = CONVERT(VARCHAR(15), DATEADD(DAY, @tarih - 2, 0), 104);
+
+       
+        IF @islemTur = 0
+        BEGIN
+            SET @girisMiktar = @miktar;
+            SET @cikisMiktar = 0;
+            SET @stok = @stok + @miktar;          
+            SET @islemTurText = 'Giriş';          
+        END
+        ELSE
+        BEGIN
+            SET @girisMiktar = 0;
+            SET @cikisMiktar = @miktar;
+            SET @stok = @stok - @miktar;         
+            SET @islemTurText = 'Çıkış';
+        END
+
+        -- Hesaplanan değerler geçici tabloya eklenir
+        INSERT INTO #TempResult(IslemTur, EvrakNo, Tarih, GirisMiktar, CikisMiktar, Stok)
+        VALUES(@islemTurText, @evrakNo, @formattedTarih, @girisMiktar, @cikisMiktar, @stok);
+
+        -- Sonraki kayda geç
+        FETCH NEXT FROM cur INTO @islemTur, @evrakNo, @tarih, @miktar;
+    END
+
+    -- Cursor kapatılır ve bellekten silinir
+    CLOSE cur;
+    DEALLOCATE cur;
+
+  
+    SELECT * FROM #TempResult;
+
+    -- Geçici tablo silinir
+    DROP TABLE #TempResult;
+END

@@ -2,7 +2,7 @@
 
 namespace Models.Entities
 {
-    public class STI 
+    public class Sti 
     {
         public int Id { get; set; }
         public IslemTur IslemTur { get; set; }

@@ -1,4 +1,6 @@
-﻿using StokEkstresi.Business.Abstacts;
+﻿using Models.Dtos;
+using Models.Entities;
+using StokEkstresi.Business.Abstacts;
 using StokEkstresi.DataAccess.Abstracts;
 using Utils.Helpers.Conversion;
 
@@ -6,17 +8,19 @@ namespace StokEkstresi.Business.Concretes
 {
     public class StokEkstresiService : IStokEkstresiService
     {
-        private readonly ISTIRepository _sTIRepository;
+        private readonly IStiRepository _stiRepository;
+        private readonly IStkRepository _stkRepository;
 
-        public StokEkstresiService(ISTIRepository sTIRepository)
+        public StokEkstresiService(IStiRepository sTIRepository, IStkRepository stkRepository)
         {
-            _sTIRepository = sTIRepository;
+            _stiRepository = sTIRepository;
+            _stkRepository = stkRepository;
         }
 
-        public async Task GetStiWithDate(DateTime? startDate, DateTime? finishDate)
+        public async Task<List<StokEkstresiDto>?> GetStokEkstresiAsync(DateTime? startDate, DateTime? finishDate, string malKodu)
         {
-            int startDateInt = 0;
-            int finishDateInt = 0;
+            int? startDateInt = null;
+            int? finishDateInt = null;
 
             if (startDate.HasValue)
                 startDateInt = DateTimeConversionHelper.ConvertToIntFromDateTime(startDate.Value);
@@ -24,13 +28,15 @@ namespace StokEkstresi.Business.Concretes
             if (finishDate.HasValue)
                 finishDateInt = DateTimeConversionHelper.ConvertToIntFromDateTime(finishDate.Value);
 
-          
+            List<StokEkstresiDto>? stokEkstresiDtos = await _stiRepository.GetStockReportAsync(startDateInt, finishDateInt, malKodu);
 
-
+            return stokEkstresiDtos;
         }
-        public async Task xx()
+
+        public async Task<List<Stk>?> GetStksAsync()
         {
-            var result = await _sTIRepository.GetAllSTIS();
+            return await _stkRepository.GetAllStks();
         }
+
     }
 }

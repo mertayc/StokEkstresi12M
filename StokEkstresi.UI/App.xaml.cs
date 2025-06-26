@@ -2,12 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using StokEkstresi.Business.Abstacts;
 using StokEkstresi.Business.Concretes;
-using StokEkstresi.Business.Extensions;
 using StokEkstresi.DataAccess.Abstracts;
 using StokEkstresi.DataAccess.Concretes.Contexts;
 using StokEkstresi.DataAccess.Concretes.Repositories;
-using System.Configuration;
-using System.Data;
 using System.IO;
 using System.Windows;
 
@@ -39,7 +36,8 @@ namespace StokEkstresi.UI
             services.AddSingleton<IConfiguration>(configuration);
             services.AddSingleton<DapperContext>();
             services.AddScoped<IStokEkstresiService, StokEkstresiService>();
-            services.AddScoped<ISTIRepository, STIRepository>();
+            services.AddScoped<IStiRepository, StiRepository>();
+            services.AddScoped<IStkRepository, StkRepository>();
             services.AddTransient<MainWindow>();
 
             ServiceProvider = services.BuildServiceProvider();

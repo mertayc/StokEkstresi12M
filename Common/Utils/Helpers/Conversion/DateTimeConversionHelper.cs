@@ -4,7 +4,7 @@
     {
         public static int ConvertToIntFromDateTime(DateTime dateTime)
         {
-            return dateTime.Year * 10000 + dateTime.Month * 100 + dateTime.Day;
+            return Convert.ToInt32((dateTime).ToOADate());
         }
 
     }
